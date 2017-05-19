@@ -228,14 +228,14 @@ func (l *Limiter) UpdatePeriod(newPeriod int) error {
 		return errors.New("ratelimiter: invalid 'perPeriod' value for the key: " + l.key)
 	}
 
-	l.perPeriod = int64(newPeriod)
-	l.expKey = newPeriod * 2
-
 	burstQuant, err := makeQuant(l.perPeriod, int64(l.limit))
 	if err != nil {
 		return err
 	}
+
 	l.burstQuant = burstQuant
+	l.perPeriod = int64(newPeriod)
+	l.expKey = newPeriod * 2
 
 	c := l.redisPool.Get()
 	defer c.Close()
