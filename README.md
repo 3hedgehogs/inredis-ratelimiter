@@ -100,4 +100,4 @@ https://godoc.org/github.com/3hedgehogs/inredis-ratelimiter
 > sp
 
 
-[![Go Report Card] (https://goreportcard.com/badge/github.com/3hedgehogs/inredis-ratelimiter)
+[![Go Report Card] (https://goreportcard.com/badge/github.com/3hedgehogs/inredis-ratelimiter)]
