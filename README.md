@@ -94,5 +94,10 @@ without it. But I still hope the code is small and easy.
 It uses sliding window that can be used in situations that reqire ratelimit changes without 
 recreating of the current ratelimiter and loosing data in Redis.
 
+## Doc
+https://godoc.org/github.com/3hedgehogs/inredis-ratelimiter
 
 > sp
+
+
+[![Go Report Card] (https://goreportcard.com/badge/github.com/3hedgehogs/inredis-ratelimiter)
