@@ -1,4 +1,7 @@
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/3hedgehogs/inredis-ratelimiter)](https://goreportcard.com/badge/github.com/3hedgehogs/inredis-ratelimiter) [![Build Status](https://travis-ci.org/3hedgehogs/inredis-ratelimiter.svg?branch=master)](https://travis-ci.org/3hedgehogs/inredis-ratelimiter)
+
+
 inredis-ratelimiter
 ===================
 
@@ -100,4 +103,4 @@ https://godoc.org/github.com/3hedgehogs/inredis-ratelimiter
 > sp
 
 
-[![Go Report Card] (https://goreportcard.com/badge/github.com/3hedgehogs/inredis-ratelimiter)]
+
