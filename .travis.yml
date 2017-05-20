@@ -1,18 +1,21 @@
 language: go
 sudo: false
 
+os:
+  - osx
+
 go:
-  - 1.6
-  - 1.7
   - 1.8
   - tip
-
-services:
-  - redis-server
 
 before_install:
   - go get -v github.com/garyburd/redigo/redis
   - go get -v github.com/stretchr/testify/assert
+  - brew update
+  - brew install redis
+
+before_script:
+  - redis-server &
 
 script:
   - go test
