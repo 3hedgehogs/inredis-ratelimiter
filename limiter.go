@@ -53,7 +53,7 @@ if reserv == 1 then
          return -usage
       end
    else
-      return redis.error_reply("to fast requests")
+      return redis.error_reply("too fast requests")
    end
 end
 
@@ -190,8 +190,10 @@ func (l *Limiter) doAcquire(reserv bool) bool {
 		}
 		return false
 	}
-	if rUsage < 0 {
+	if reserv {
 		l.lastID = t
+	}
+	if rUsage < 0 {
 		l.Usage = -rUsage
 		if l.debug {
 			log.Printf("ratelimiter: LIMIT is reached\n")
@@ -200,7 +202,6 @@ func (l *Limiter) doAcquire(reserv bool) bool {
 			return false
 		}
 	} else {
-		l.lastID = t
 		l.Usage = rUsage
 		if l.debug && rUsage >= l.limit {
 			log.Printf("ratelimiter: LIMIT is reached\n")

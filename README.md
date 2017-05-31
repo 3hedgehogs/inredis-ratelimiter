@@ -91,11 +91,13 @@ func main() {
 The original idea is from here:
 https://engineering.classdojo.com/blog/2015/02/06/rolling-rate-limiter/
 
-But moved to use Redis lua scripting due to possible "time" problems.
-If clients are not synced with ntp servers limiting will not work correctly
-without it. But I still hope the code is small and easy.
-It uses sliding window that can be used in situations that reqire ratelimit changes without 
-recreating of the current ratelimiter and loosing data in Redis.
+But moved to use Redis lua scripting due to possible "time" resynchronisations.
+If clients are not synced with ntp servers well ratelimiting will not work correctly.
+I still hope the code is small and easy understandable.
+Used a sliding window is based on Redis sorted set and 
+all used "current slots" are stored there as timestamps.
+Used in lua script command "redis.replicate_commands()" requires Redis version >=3.2.0.
+
 
 ## Doc
 https://godoc.org/github.com/3hedgehogs/inredis-ratelimiter

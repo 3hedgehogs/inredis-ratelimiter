@@ -42,7 +42,7 @@ if reserv == 1 then
          return -usage
       end
    else
-      return redis.error_reply("to fast requests")
+      return redis.error_reply("too fast requests")
    end
 end
 
