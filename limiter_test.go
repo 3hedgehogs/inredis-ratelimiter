@@ -2,9 +2,6 @@ package ratelimiter
 
 import (
 	"fmt"
-	"math/rand"
-	"strconv"
-	"sync"
 	"time"
 
 	"testing"
@@ -49,29 +46,6 @@ func NewPool(server string, password string, db int) *redis.Pool {
 			_, err := c.Do("PING")
 			return err
 		},
-	}
-}
-
-func benchmark1(wg *sync.WaitGroup, p *redis.Pool, id int) {
-	defer wg.Done()
-	lbt, err := New("benchmark", 10, 2, "", p, false)
-	if err != nil {
-		fmt.Printf("Cannot create limiter: %s\n", err)
-		return
-	}
-	//lbt.Clean()
-	//lbt.UpdatePeriod(3)
-	//lbt.StopBurst = true
-	for i := 0; i < 10000; i = i + 1 {
-		r := lbt.TryAcquire()
-		if r {
-			t := time.Now().UnixNano() / 1000
-			ts := strconv.FormatInt(t, 10)
-			fmt.Printf("ID%02d: *OK: %s, %d\n", id, ts, lbt.Usage)
-		} else {
-			//fmt.Printf("ID%02d: NOK: %d\n", id, lbt.Usage)
-		}
-		time.Sleep(time.Duration(rand.Intn(100)) * time.Microsecond)
 	}
 }
 
@@ -123,14 +97,4 @@ func TestRateLimiter(t *testing.T) {
 	r = l.TryAcquire()
 	assert.Equal(t, true, r)
 	assert.Equal(t, 1, l.Usage)
-
-	//	var wg sync.WaitGroup
-	//	var parallels = 10
-	//	wg.Add(parallels)
-	//	for i := 0; i < parallels; i = i + 1 {
-	//		go benchmark1(&wg, p, i)
-	//		//time.Sleep(10 * time.Millisecond)
-	//	}
-	//	wg.Wait()
-
 }
