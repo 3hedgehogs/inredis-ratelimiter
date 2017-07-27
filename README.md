@@ -98,11 +98,12 @@ Used a sliding window is based on Redis sorted set and
 all used "current slots" are stored there as timestamps.
 Used in lua script command "redis.replicate_commands()" requires Redis version >=3.2.0.
 
+* The same algorithm (lua script) is used in javascript library:
+https://github.com/dex4er/js-sliding-window-rate-limiter
+and few changes for lua script have been ported from there.
 
 ## Doc
 https://godoc.org/github.com/3hedgehogs/inredis-ratelimiter
 
-> sp
-
-
+> sergey.polyakov
 

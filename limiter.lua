@@ -2,6 +2,10 @@
 -- KEYS[1] - zSet name
 -- ARGV[n == 5] - Period (seconds), counter limit, TTL of zSet (seconds), mindiff, to reserv a Slot or not
 
+-- Copyright (c) 2017 3hedgehogs
+-- Copyright (c) 2017 Piotr Roszatycki <piotr.roszatycki@gmail.com>
+
+
 redis.replicate_commands()
 redis.set_repl(redis.REPL_NONE);
 
@@ -11,17 +15,12 @@ local expiretime = tonumber(ARGV[3])
 local mindiff    = tonumber(ARGV[4])
 local reserv     = tonumber(ARGV[5])
 
-local time_string = ""
 local redistime = redis.call("TIME")
-for _,tp in ipairs(redistime) do
-   while string.len(tp) < 6 do
-       tp = "0" .. tp
-   end
-   time_string = time_string .. tp
-end
+
+local ts = redistime[1] * 1e6 + redistime[2]
 
 local ts = tonumber(time_string)
-local startwindow = ts - period * 1000000
+local startwindow = ts - period * 1e6
 redis.call("ZREMRANGEBYSCORE", KEYS[1], "-inf", startwindow)
 
 local usage = tonumber(redis.call("ZCOUNT", KEYS[1], 1, ts))

@@ -16,7 +16,7 @@ import (
 
 func benchmark2(wg *sync.WaitGroup, p *redis.Pool, id int, N int) {
 	defer wg.Done()
-	lbt, err := New("benchmark", 10, 2, "", p, false)
+	lbt, err := New("benchmark", 100, 10, "", p, false)
 	if err != nil {
 		fmt.Printf("Cannot create limiter: %s\n", err)
 		return

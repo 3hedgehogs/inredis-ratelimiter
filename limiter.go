@@ -22,17 +22,11 @@ local expiretime = tonumber(ARGV[3])
 local mindiff    = tonumber(ARGV[4])
 local reserv     = tonumber(ARGV[5])
 
-local time_string = ""
 local redistime = redis.call("TIME")
-for _,tp in ipairs(redistime) do
-   while string.len(tp) < 6 do
-       tp = "0" .. tp
-   end
-   time_string = time_string .. tp
-end
 
-local ts = tonumber(time_string)
-local startwindow = ts - period * 1000000
+local ts = redistime[1] * 1e6 + redistime[2]
+
+local startwindow = ts - period * 1e6
 redis.call("ZREMRANGEBYSCORE", KEYS[1], "-inf", startwindow)
 
 local usage = tonumber(redis.call("ZCOUNT", KEYS[1], 1, ts))
@@ -63,7 +57,7 @@ return usage
 // Limiter structure
 type Limiter struct {
 	perPeriod  int64         // Time window size [now - PerPeriod ,now], seconds
-	expKey     int           // Time of life for Zset (key) in Redis, seconds (default is perPeriod * 2)
+	expKey     int           // Time of life for Zset (key) in Redis, seconds (default is equal to perPeriod)
 	key        string        // Name of the Limiter
 	limit      int           // Maximal Rate Usage/Limit
 	Usage      int           // Last seen Counter/Usage
@@ -97,7 +91,7 @@ func New(key string, limit int, period int, rediskey string, pool *redis.Pool, d
 	if rediskey == "" {
 		rediskey = key + "-ratelimit:rk"
 	}
-	expKey := period * 2
+	expKey := period
 
 	// Load script
 	c := pool.Get()
